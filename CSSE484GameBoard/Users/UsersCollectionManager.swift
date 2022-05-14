@@ -26,7 +26,7 @@ class UsersCollectionManager{
                 print("Document does not exist, create one")
                 docRef.setData([
                     kUsername: Username ?? "",
-                    kProfilePhotoURL: photoUrl ?? ""
+                    kProfilePhotoURL: photoUrl ?? "",
                 ])
             }
         }
@@ -51,6 +51,7 @@ class UsersCollectionManager{
     func stopListening(_ listenerRegistration: ListenerRegistration?){
         listenerRegistration?.remove()
     }
+    
     var username: String{
         if let name = _latestDocument?.get(kUsername){
             return name as! String
@@ -78,7 +79,6 @@ class UsersCollectionManager{
     }
     
     func updateProfilePhoto(PhotoUrl: String){
-
         _collectionRef.document(_latestDocument!.documentID).updateData([
             kProfilePhotoURL: PhotoUrl,
         ]){err in

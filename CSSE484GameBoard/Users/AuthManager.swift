@@ -60,7 +60,7 @@ class AuthManager{
                 print("There was an error in te creating user:\(error) \n")
                 return
             }
-            print("User created \n")
+            print("Sign in here created \n")
         }
     }
     

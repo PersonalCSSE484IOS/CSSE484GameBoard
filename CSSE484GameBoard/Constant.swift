@@ -12,3 +12,16 @@ let kshowMenuSegue = "showMenuSegue"
 let kUserPath = "Users"
 let kUsername = "Username"
 let kProfilePhotoURL = "ProfilePhotoURL"
+
+//game part
+let kGamePath = "Games"
+let kGameName = "gameName"
+let kCoverPhotoURL = "coverPhotoURL"
+let kReleasedDate = "releasedDate"
+let kGameType = "gameType"
+let kisReleased = "isReleased"
+let kGameCell = "GameCell"
+let kGameIntroduction = "GameIntroduction"
+//segues
+let kshowGameDetail = "showGameDetail"
+let kshowProfilePage = "showProfilePage"
