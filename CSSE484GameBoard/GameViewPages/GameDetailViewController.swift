@@ -10,6 +10,9 @@ import UIKit
 import Firebase
 class GameCommentTableViewCell: UITableViewCell{
     
+    @IBOutlet weak var CommentLabel: UILabel!
+    @IBOutlet weak var UsernameLabel: UILabel!
+    @IBOutlet weak var UserImage: UIImageView!
 }
 class GameDetailViewController: UITableViewController{
     @IBOutlet weak var gameImageView: UIImageView!
@@ -19,6 +22,7 @@ class GameDetailViewController: UITableViewController{
     var gameDocumentId: String!
     var gameListenerRegistration: ListenerRegistration?
     var userListenerRegistration: ListenerRegistration?
+    var commentListenerRegistration: ListenerRegistration?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +34,7 @@ class GameDetailViewController: UITableViewController{
         if(Auth.auth().currentUser?.email == "rykerzhang048109@gmail.com"){
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(showEditGameIntroduction))
         }else{
-            navigationItem.rightBarButtonItem = nil
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(showAddCommentDialogue))
         }
     }
     
@@ -40,11 +44,77 @@ class GameDetailViewController: UITableViewController{
             self.updateGameViews()
             self.showOrHideEditButton()
         }
+        startListeningForComments()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        stopListeningForComments()
     }
+    
+    func startListeningForComments(){
+        stopListeningForComments()
+        commentListenerRegistration = CommentCollectionManager.shared.startListening(filterByAuthor: nil){
+            self.tableView.reloadData()
+        }
+    }
+    
+    func stopListeningForComments(){
+        CommentCollectionManager.shared.stopListening(commentListenerRegistration)
+    }
+    
+    func goBack(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let comment = CommentCollectionManager.shared.latestComments[indexPath.row]
+        return (AuthManager.shared.currentUser?.email==comment.authorEmail)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return CommentCollectionManager.shared.latestComments.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: kgameCommentCell, for: indexPath) as! GameCommentTableViewCell
+        let comment = CommentCollectionManager.shared.latestComments[indexPath.row]
+        cell.UsernameLabel.text = comment.authorUsername
+        cell.CommentLabel.text = comment.content
+        print("So the comment is \(comment.content) and the username is \(comment.authorUsername) and the user profile url is \(UsersCollectionManager.shared.profilePhotoURL)")
+        if !UsersCollectionManager.shared.profilePhotoURL.isEmpty{
+            ImageUtils.load(imageView: cell.UserImage, from: UsersCollectionManager.shared.profilePhotoURL)
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if(Auth.auth().currentUser?.email == "rykerzhang048109@gmail.com"){
+            if editingStyle == .delete {
+                //TODO: Implement delete
+                let commentDelete = CommentCollectionManager.shared.latestComments[indexPath.row]
+                CommentCollectionManager.shared.delete(commentDelete.documentId!)
+            }
+        }
+    }
+    
+    @objc func showAddCommentDialogue(){
+        let alertController = UIAlertController(title: "Add Your Comment", message: "", preferredStyle: UIAlertController.Style.alert)
+        alertController.addTextField{ textField in
+            textField.placeholder = "Comment here"
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) { action in
+        }
+        alertController.addAction(cancelAction)
+        let addComment = UIAlertAction(title: "Submit", style: UIAlertAction.Style.default) { action in
+            let commentContent = alertController.textFields![0] as UITextField
+            let newComment = Comment(content: commentContent.text!, authorEmail: (Auth.auth().currentUser?.email)!, authorUsername: UsersCollectionManager.shared.username)
+            CommentCollectionManager.shared.add(newComment)
+        }
+        alertController.addAction(addComment)
+        present(alertController, animated: true)
+    }
+    
     
     @objc func showEditGameIntroduction(){
         let alertController = UIAlertController(title: "Edit game introduction", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -97,5 +167,8 @@ class GameDetailViewController: UITableViewController{
                     }
                 }
             }
+    
+    
+    
     
 }

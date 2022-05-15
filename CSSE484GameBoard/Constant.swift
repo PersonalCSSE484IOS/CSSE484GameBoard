@@ -25,3 +25,11 @@ let kGameIntroduction = "GameIntroduction"
 //segues
 let kshowGameDetail = "showGameDetail"
 let kshowProfilePage = "showProfilePage"
+
+//comment
+let kgameCommentCell = "gameCommentCell"
+let kCommentPath = "Comments"
+let kCommentAuthorEmail = "AuthorEmail"
+let kCommentAuthorUsername = "AuthorUsername"
+let kCommentContent = "Content"
+let kCommentCreatedTime = "createdTime"

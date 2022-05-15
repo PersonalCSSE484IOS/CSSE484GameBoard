@@ -18,6 +18,7 @@ class MenuTableViewController: UITableViewController{
     var logoutHandle : AuthStateDidChangeListenerHandle?
     var gamesListenerRegistration: ListenerRegistration?
     var gameDocumentIdFromCellArr: [String] = []
+    var gameDocumentIdFromCell: String = ""
     var showReleased = true
     
     override func viewDidLoad() {
@@ -42,18 +43,6 @@ class MenuTableViewController: UITableViewController{
     
     func startListeningForGame(){
         stopListeningForGame()
-//        if(showReleased == true){
-//            gamesListenerRegistration = GameCollectionManager.shared.startListeningByGameReleased(filterBy: true)
-//            {
-//                self.tableView.reloadData()
-//            }
-//        }else{
-//            gamesListenerRegistration = GameCollectionManager.shared.startListeningByGameReleased(filterBy: false)
-//            {
-//                self.tableView.reloadData()
-//            }
-//        }
-        
         gamesListenerRegistration = GameCollectionManager.shared.startListeningByGameReleased(filterBy: showReleased ? true : false){
             self.tableView.reloadData()
         }
@@ -117,6 +106,9 @@ class MenuTableViewController: UITableViewController{
             if let indexPath = tableView.indexPathForSelectedRow{
                 let game = GameCollectionManager.shared.latestGames[indexPath.row]
                 gd.gameDocumentId = game.documentId!
+                CommentDocumentManager.shared.gameDocumentId = game.documentId
+                CommentCollectionManager.shared.gameDocumentId = game.documentId
+
             }
         }
     }
@@ -151,6 +143,15 @@ class MenuTableViewController: UITableViewController{
         self.tableView.reloadData()
     }
     
+//    //helper function
+//    @objc func imageTapped(gesture: UIGestureRecognizer) {
+//            // if the tapped view is a UIImageView then set it to imageview
+//            if (gesture.view as? UIImageView) != nil {
+//                print("Image Tapped")
+//                //Here you can initiate your new ViewController
+//                self.tag
+//            }
+//        }
     
 //TODO: Button change and button effects
     @IBAction func showReleasedGame(_ sender: Any) {
