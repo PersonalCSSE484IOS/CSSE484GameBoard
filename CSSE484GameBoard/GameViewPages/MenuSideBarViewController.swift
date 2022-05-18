@@ -50,9 +50,6 @@ class MenuSideBarViewController: UIViewController{
         print("Press Personal Settings Button")
         self.performSegue(withIdentifier: kshowProfilePage, sender: self)
     }
-    @IBAction func pressMyListButton(_ sender: Any) {
-        print("Press My List Button")
-    }
     @IBAction func pressLogOutButton(_ sender: Any) {
         dismiss(animated: true)
         AuthManager.shared.signOut()

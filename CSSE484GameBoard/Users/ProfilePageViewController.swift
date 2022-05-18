@@ -25,6 +25,8 @@ class ProfilePageViewController: UIViewController{
         profilePhotoImageView.addGestureRecognizer(tapGesture)
                 // make sure imageView can be interacted with by user
         profilePhotoImageView.isUserInteractionEnabled = true
+        
+        self.circleImage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,5 +84,13 @@ extension ProfilePageViewController: UIImagePickerControllerDelegate, UINavigati
                     StorageManager.shared.uploadProfilePhoto(uid: (Auth.auth().currentUser?.email)!, image: image)
                 }
                 picker.dismiss(animated: true)
+    }
+    
+    func circleImage(){
+        profilePhotoImageView.layer.borderWidth = 1
+        profilePhotoImageView.layer.masksToBounds = false
+        profilePhotoImageView.layer.borderColor = UIColor.black.cgColor
+        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.frame.height/2
+        profilePhotoImageView.clipsToBounds = true
     }
 }

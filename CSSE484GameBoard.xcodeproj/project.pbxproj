@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		170689A62831B995003FC5AF /* FavoriteGamesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170689A52831B995003FC5AF /* FavoriteGamesTableViewController.swift */; };
+		170689AA2832D3B0003FC5AF /* GameRankTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170689A92832D3B0003FC5AF /* GameRankTableViewController.swift */; };
 		1753EBBE2828A13100300A6B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1753EBBD2828A13100300A6B /* Game.swift */; };
 		1753EBC02828A15200300A6B /* GameCollectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1753EBBF2828A15200300A6B /* GameCollectionManager.swift */; };
 		1753EBC22828A15C00300A6B /* GameDocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1753EBC12828A15C00300A6B /* GameDocumentManager.swift */; };
@@ -41,6 +43,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		170689A52831B995003FC5AF /* FavoriteGamesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteGamesTableViewController.swift; sourceTree = "<group>"; };
+		170689A92832D3B0003FC5AF /* GameRankTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRankTableViewController.swift; sourceTree = "<group>"; };
 		1753EBBD2828A13100300A6B /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		1753EBBF2828A15200300A6B /* GameCollectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCollectionManager.swift; sourceTree = "<group>"; };
 		1753EBC12828A15C00300A6B /* GameDocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDocumentManager.swift; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				1753EBDE282D8D5B00300A6B /* GameDetailViewController.swift */,
 				175A863F282789AC005C8557 /* MenuSideBarViewController.swift */,
 				1753EBFE2830AD1900300A6B /* AllGamesViewController.swift */,
+				170689A52831B995003FC5AF /* FavoriteGamesTableViewController.swift */,
+				170689A92832D3B0003FC5AF /* GameRankTableViewController.swift */,
 			);
 			path = GameViewPages;
 			sourceTree = "<group>";
@@ -148,20 +154,20 @@
 		175A860B28277CC9005C8557 /* CSSE484GameBoard */ = {
 			isa = PBXGroup;
 			children = (
-				1753EBFD2830ACD900300A6B /* GameViewPages */,
 				175A863928278235005C8557 /* Constant.swift */,
+				1753EBFD2830ACD900300A6B /* GameViewPages */,
 				1753EBF5282F895800300A6B /* Comments */,
 				1753EBBC2828A12800300A6B /* Games */,
 				1753EBB728286EC200300A6B /* Users */,
 				175A860C28277CC9005C8557 /* AppDelegate.swift */,
+				1753EBE6282F628600300A6B /* ImageUtils.swift */,
+				1753EBE8282F62A900300A6B /* StorageManager.swift */,
 				175A860E28277CC9005C8557 /* SceneDelegate.swift */,
 				175A861228277CC9005C8557 /* Main.storyboard */,
 				175A861528277CCA005C8557 /* Assets.xcassets */,
 				175A861728277CCA005C8557 /* LaunchScreen.storyboard */,
 				175A862028277CF4005C8557 /* GoogleService-Info.plist */,
 				175A861A28277CCA005C8557 /* Info.plist */,
-				1753EBE6282F628600300A6B /* ImageUtils.swift */,
-				1753EBE8282F62A900300A6B /* StorageManager.swift */,
 			);
 			path = CSSE484GameBoard;
 			sourceTree = "<group>";
@@ -259,8 +265,10 @@
 				1753EBC22828A15C00300A6B /* GameDocumentManager.swift in Sources */,
 				175A863C28278504005C8557 /* UsersCollectionManager.swift in Sources */,
 				1753EBFF2830AD1900300A6B /* AllGamesViewController.swift in Sources */,
+				170689A62831B995003FC5AF /* FavoriteGamesTableViewController.swift in Sources */,
 				1753EBBE2828A13100300A6B /* Game.swift in Sources */,
 				175A8640282789AC005C8557 /* MenuSideBarViewController.swift in Sources */,
+				170689AA2832D3B0003FC5AF /* GameRankTableViewController.swift in Sources */,
 				175A860D28277CC9005C8557 /* AppDelegate.swift in Sources */,
 				175A863628277EC3005C8557 /* LoginMenuViewController.swift in Sources */,
 				175A864228278D0C005C8557 /* MenuTableViewController.swift in Sources */,

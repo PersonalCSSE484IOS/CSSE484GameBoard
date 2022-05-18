@@ -37,6 +37,7 @@ class GameCollectionManager{
         }
     }
     
+    
     func startListeningByGameReleased(filterBy isReleased: Bool!, changeListener: @escaping (()-> Void))->ListenerRegistration{
             var query = _collectionRef.order(by: kReleasedDate, descending: true).limit(to:50)
             if let gameTypeFilter = isReleased{
@@ -49,6 +50,48 @@ class GameCollectionManager{
                 print("error")
                 return
             }
+            self.latestGames.removeAll()
+            for document in documents{
+                self.latestGames.append(Game(documentSnapshot:document))
+            }
+            changeListener()
+        }
+    }
+    
+    func startListeningByLikedBy(filterBy LikedUserEmail: String!, changeListener: @escaping (()-> Void))->ListenerRegistration{
+            var query = _collectionRef.order(by: kReleasedDate, descending: true).limit(to:50)
+            if let LikedUserEmailFilter = LikedUserEmail{
+                print("TODO: FILTER by game favorite ")
+                query = query.whereField(klikedBy, arrayContains: LikedUserEmailFilter)
+            }
+            
+        return query.addSnapshotListener{querySnapshot, error in
+            guard let documents = querySnapshot?.documents else{
+                print("error in likedbY")
+                return
+            }
+            
+            self.latestGames.removeAll()
+            for document in documents{
+                self.latestGames.append(Game(documentSnapshot:document))
+            }
+            changeListener()
+        }
+    }
+    
+    func startListeningByLikedByCount(filterBy LikedByCount: Int!, changeListener: @escaping (()-> Void))->ListenerRegistration{
+        var query = _collectionRef.order(by: klikedByCount, descending: true).limit(to:50)
+        if let LikedByCountFilter = LikedByCount{
+                print("TODO: FILTER by game favorite ")
+                query = query.whereField(klikedByCount, isNotEqualTo: LikedByCountFilter)
+            }
+            
+        return query.addSnapshotListener{querySnapshot, error in
+            guard let documents = querySnapshot?.documents else{
+                print("error in likedbY")
+                return
+            }
+            
             self.latestGames.removeAll()
             for document in documents{
                 self.latestGames.append(Game(documentSnapshot:document))
@@ -72,7 +115,9 @@ class GameCollectionManager{
                     kGameName: gameName ?? "",
                     kCoverPhotoURL: coverPhotoURL ?? "",
                     kGameType: gameType,
-                    kReleasedDate:releasedDate
+                    kReleasedDate:releasedDate,
+                    klikedBy: ["rykerzhang048109@gmail.com"],
+                    klikedByCount: 1
                 ])
             }
         }

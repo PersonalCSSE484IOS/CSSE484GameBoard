@@ -24,6 +24,8 @@ class MenuTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.reloadData()
+//        navigationController?.navigationBar.backgroundColor = UIColor(red: 52/255, green: 199/255, blue: 89/255, alpha: 1)
+//        navigationController?.navigationBar.isTranslucent = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -169,9 +171,12 @@ class MenuTableViewController: UITableViewController{
 
     }
     @IBAction func showRanks(_ sender: Any) {
+        self.performSegue(withIdentifier: kshowRankedGamesSegue, sender: self)
     }
     @IBAction func showGames(_ sender: Any) {
+        self.performSegue(withIdentifier: kshowAllGamesSegue, sender: self)
     }
     @IBAction func showList(_ sender: Any) {
+        self.performSegue(withIdentifier: kshowMyFavoriteSegue, sender: self)
     }
 }

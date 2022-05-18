@@ -73,6 +73,20 @@ class GameDocumentManager{
                 }
             }
     }
+    
+    func updateGameLikedBy(UserEmails: [String]){
+        _collectionRef.document(latestGame!.documentId!).updateData([
+            klikedBy: UserEmails,
+            klikedByCount: UserEmails.count
+        ]){
+                err in
+                if let err = err{
+                    print("Error updateing: \(err)")
+                }else{
+                    print("Document updated")
+                }
+            }
+    }
 
     func returnGameType() -> [String]{
         if let lastDoc = latestGame{
@@ -114,6 +128,20 @@ class GameDocumentManager{
             return gameIntro as! String
         }
         return "jjj"
+    }
+    
+    var likedUserEmails: [String]{
+        if let likedUsers = _latestDocument?.get(klikedBy){
+            return likedUsers as! [String]
+        }
+        return []
+    }
+    
+    var likedUserEmailsCount: Int{
+        if let likedUsersCount = _latestDocument?.get(klikedByCount){
+            return likedUsersCount as! Int
+        }
+        return 0
     }
     
 }

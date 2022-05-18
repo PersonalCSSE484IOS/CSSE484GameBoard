@@ -45,5 +45,7 @@ class LoginMenuViewController: UIViewController{
         let password = PasswordLabel.text!
         AuthManager.shared.signinExistingEmailPasswordUser(email: email, password: password)
     }
+    
+    
 }
 

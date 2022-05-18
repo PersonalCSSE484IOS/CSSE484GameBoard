@@ -16,6 +16,7 @@ class Game{
     var documentId: String?
     var isReleased: Bool?
     var gameIntroduction: String?
+    //var likedBy: [String]
     let date = NSDate()
     
     init(coverPhotoURL: String, gameName: String, releasedDate: String, gameType: [String]){
@@ -25,6 +26,7 @@ class Game{
         self.gameType = gameType
         self.isReleased = checkIsReleased()
         self.documentId = self.gameName
+        //self.likedBy = likedBy
     }
     
     init(documentSnapshot: DocumentSnapshot){
@@ -34,8 +36,8 @@ class Game{
         self.gameName = data?[kGameName] as! String
         self.releasedDate = data?[kReleasedDate] as! String
         self.gameType = data?[kGameType] as! [String]
+        //self.likedBy = data?[klikedBy] as! [String]
         //self.gameIntroduction = data? [kGameIntroduction] as! String
-
     }
     
     func checkIsReleased() -> Bool{

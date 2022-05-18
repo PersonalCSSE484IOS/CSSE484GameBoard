@@ -23,11 +23,13 @@ class GameDetailViewController: UITableViewController{
     var gameListenerRegistration: ListenerRegistration?
     var userListenerRegistration: ListenerRegistration?
     var commentListenerRegistration: ListenerRegistration?
+    var likedUsersArr: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateGameViews()
-        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 400
     }
     
     func showOrHideEditButton(){
@@ -36,6 +38,7 @@ class GameDetailViewController: UITableViewController{
         }else{
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(showAddCommentDialogue))
         }
+        //self.starButtonViewSet()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,11 +83,10 @@ class GameDetailViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: kgameCommentCell, for: indexPath) as! GameCommentTableViewCell
         let comment = CommentCollectionManager.shared.latestComments[indexPath.row]
         cell.UsernameLabel.text = comment.authorUsername
-        cell.CommentLabel.text = comment.content
         print("So the comment is \(comment.content) and the username is \(comment.authorUsername) and the user profile url is \(UsersCollectionManager.shared.profilePhotoURL)")
-        if !UsersCollectionManager.shared.profilePhotoURL.isEmpty{
-            ImageUtils.load(imageView: cell.UserImage, from: UsersCollectionManager.shared.profilePhotoURL)
-        }
+        cell.CommentLabel.text = comment.content
+        self.loadUserImage(cell: cell)
+        self.circleImage(cell: cell)
         return cell
     }
     
@@ -138,9 +140,32 @@ class GameDetailViewController: UITableViewController{
             let stringRepresentationOfType = game.gameType.joined(separator: "   ")
             gameTypeLabel.text = stringRepresentationOfType
             loadParameters()
+            starButtonViewSet()
         }
+        
     }
     
+    func loadUserImage(cell: GameCommentTableViewCell){
+        let docRef = Firestore.firestore().collection(kUserPath).document((Auth.auth().currentUser?.email)!)
+                docRef.getDocument(source: .cache) { (document, error) in
+                    if let document = document {
+                        if let imgUrl = URL(string: document.get(kProfilePhotoURL) as! String) {
+                                    DispatchQueue.global().async { // Download in the background
+                                      do {
+                                        let data = try Data(contentsOf: imgUrl)
+                                        DispatchQueue.main.async { // Then update on main thread
+                                            cell.UserImage.image = UIImage(data: data)
+                                        }
+                                      } catch {
+                                        print("Error downloading image: \(error)")
+                                      }
+                                    }
+                            }
+                    } else {
+                        print("Document does not exist in cache")
+                    }
+                }
+    }
     func loadParameters(){
        //TODO: Update the view using the manager's data
         let docRef = Firestore.firestore().collection(kGamePath).document(gameDocumentId)
@@ -168,7 +193,54 @@ class GameDetailViewController: UITableViewController{
                 }
             }
     
+    func starButtonViewSet(){
+        var currentUserFavoriteList = GameDocumentManager.shared.likedUserEmails
+        print("So the currentUserFavoriteList is \(currentUserFavoriteList)")
+        if(currentUserFavoriteList == []){
+            starButtonLabel.setTitle("☆", for: .normal)
+        }else if(currentUserFavoriteList.contains((Auth.auth().currentUser?.email)!)){
+            starButtonLabel.setTitle("★", for: .normal)
+        }else{
+            starButtonLabel.setTitle("☆", for: .normal)
+        }
+    }
+    @IBOutlet weak var starButtonLabel: UIButton!
     
+    @IBAction func pressStarButton(_ sender: Any) {
+        let docRef = Firestore.firestore().collection(kGamePath).document(self.gameDocumentId)
+                    docRef.getDocument(source: .cache) { (document, error) in
+                        if let document = document {
+                            var likedBy = document.get(klikedBy) as! [String]
+                            print("The current user fav list is \(likedBy)")
+                            if(likedBy == []){
+                                likedBy.append((Auth.auth().currentUser?.email)!)
+                                GameDocumentManager.shared.updateGameLikedBy(UserEmails: likedBy)
+                                self.starButtonLabel.setTitle("★", for: .normal)
+                            }else if(likedBy.contains((Auth.auth().currentUser?.email)!)){
+                                let newLikedBy = likedBy.filter {$0 != Auth.auth().currentUser?.email}
+                                GameDocumentManager.shared.updateGameLikedBy(UserEmails: newLikedBy)
+                                self.starButtonLabel.setTitle("☆", for: .normal)
+                            }else{
+                                likedBy.append((Auth.auth().currentUser?.email)!)
+                                GameDocumentManager.shared.updateGameLikedBy(UserEmails: likedBy)
+                                self.starButtonLabel.setTitle("★", for: .normal)
+                            }
+                        } else {
+                            print("Document does not exist in cache")
+                        }
+                    }
+        
+    }
     
+    @IBAction func PressBackToPreviousPage(_ sender: Any) {
+        self.goBack()
+    }
     
+    func circleImage(cell: GameCommentTableViewCell){
+        cell.UserImage.layer.borderWidth = 1
+        cell.UserImage.layer.masksToBounds = false
+        cell.UserImage.layer.borderColor = UIColor.black.cgColor
+        cell.UserImage.layer.cornerRadius = cell.UserImage.frame.height/2
+        cell.UserImage.clipsToBounds = true
+    }
 }

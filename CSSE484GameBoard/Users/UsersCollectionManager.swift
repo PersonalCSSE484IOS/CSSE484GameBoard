@@ -66,6 +66,13 @@ class UsersCollectionManager{
         return ""
     }
     
+    var FavoriteList: [String]{
+        if let favoriteList = _latestDocument?.get(kFavoriteList){
+            return favoriteList as! [String]
+        }
+        return []
+    }
+    
     func update(name: String){
         _collectionRef.document(_latestDocument!.documentID).updateData([
             kUsername: name,
@@ -81,6 +88,18 @@ class UsersCollectionManager{
     func updateProfilePhoto(PhotoUrl: String){
         _collectionRef.document(_latestDocument!.documentID).updateData([
             kProfilePhotoURL: PhotoUrl,
+        ]){err in
+            if let err = err{
+                print("Error updating document:\(err)")
+            }else{
+                print("Name successfully updated")
+            }
+        }
+    }
+    
+    func updateFavoriteList(GameList: [String]){
+        _collectionRef.document((Auth.auth().currentUser?.email)!).updateData([
+            kFavoriteList: GameList
         ]){err in
             if let err = err{
                 print("Error updating document:\(err)")
