@@ -114,6 +114,7 @@ class MenuSideBarViewController: UIViewController{
         let docRef = Firestore.firestore().collection(kUserPath).document((Auth.auth().currentUser?.email)!)
                     docRef.getDocument(source: .cache) { (document, error) in
                         if let document = document {
+                            print("\(Auth.auth().currentUser?.email) has the profile ")
                             if let imgUrl = URL(string: document.get(kProfilePhotoURL) as! String) {
                                         DispatchQueue.global().async { // Download in the background
                                           do {

@@ -17,6 +17,8 @@ class LoginMenuViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AuthManager.shared.signOut()
+
         EmailLabel.placeholder = "Email"
         PasswordLabel.placeholder = "Password"
     }
