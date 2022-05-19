@@ -31,10 +31,10 @@ class AllGamesTableViewConroller: UITableViewController{
         super.viewDidLoad()
         navigationItem.title = "The Games"
         
-        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedRight))
         swipeRight.direction = UISwipeGestureRecognizer.Direction.right
         
-        var swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedLeft))
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedLeft))
         swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
         
         self.view.addGestureRecognizer(swipeLeft)

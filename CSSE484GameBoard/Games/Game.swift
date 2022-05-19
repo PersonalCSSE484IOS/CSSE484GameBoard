@@ -55,6 +55,5 @@ class Game{
         }else{
             return true
         }
-
     }
 }

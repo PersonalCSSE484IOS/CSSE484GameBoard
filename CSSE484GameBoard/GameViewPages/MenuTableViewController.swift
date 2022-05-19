@@ -81,7 +81,6 @@ class MenuTableViewController: UITableViewController{
         print("nOW THE ID IS \(cell.gameDocumentId)")
         gameDocumentIdFromCellArr.append(cell.gameDocumentId)
         self.loadCover(cell: cell, game: game)
-        //cell.MenuGameImage.frame = CGRect(x:0.0,y:0.0,width:100.0,height:50.0)
         circleImage(MenuGameImage: cell.MenuGameImage)
         return cell
     }

@@ -20,10 +20,9 @@ class ProfilePageViewController: UIViewController{
         displayUsernameTextField.text = UsersCollectionManager.shared.username
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(gesture:)))
-
-                // add it to the image view;
+        // add it to the image view;
         profilePhotoImageView.addGestureRecognizer(tapGesture)
-                // make sure imageView can be interacted with by user
+        // make sure imageView can be interacted with by user
         profilePhotoImageView.isUserInteractionEnabled = true
         
         self.circleImage()
